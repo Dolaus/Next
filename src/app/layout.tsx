@@ -1,14 +1,25 @@
+import "@/styles/global.css";
+import ReduxProvider from "@/components/ReduxProvider";
+import ClientOnly from "@/components/ClientOnly";
+import NavBar from "@/components/navbar/NavBar";
+import AuthInitializer from "@/components/AuthInitializer";
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-      </body>
-    </html>
-  );
+                                       children,
+                                   }: {
+    children: React.ReactNode;
+}) {
+    return (
+        <html lang="en">
+        <body>
+        <ReduxProvider>
+            <AuthInitializer />
+            <ClientOnly>
+                <NavBar />
+            </ClientOnly>
+            {children}
+        </ReduxProvider>
+        </body>
+        </html>
+    );
 }

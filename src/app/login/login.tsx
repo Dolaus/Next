@@ -25,13 +25,12 @@ export default function LoginPage() {
 
     function loginHandler(values: ILogin) {
         const user = { username: values.email, password: values.password };
-        console.log(user);
         dispatch(login(user));
     }
 
     useEffect(() => {
         if (isToken) {
-            router.push('/');
+            router.push('/exhibits/1');
         }
     }, [isToken, router]);
 
