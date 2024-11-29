@@ -7,7 +7,7 @@ import Pagination from '@mui/material/Pagination';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Button from '@mui/material/Button';
 import CommentPage from "@/components/CommentPage";
-import {getAllExhibits} from "@/api/exhibitActions";
+import { getMyExhibits } from "@/api/exhibitActions";
 import Typography from "@mui/material/Typography";
 
 interface IExhibition {
@@ -34,12 +34,24 @@ const ExhibitsPage = () => {
 
     const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
+    const getToken = (): string | null => {
+        return localStorage.getItem('token');
+    };
+
     const fetchExhibits = async (page: number) => {
         setLoading(true);
         setError(null);
 
+        const token = getToken();
+
+        if (!token) {
+            setError('User not authenticated. Please log in.');
+            setLoading(false);
+            return;
+        }
+
         try {
-            const response = await getAllExhibits(page);
+            const response = await getMyExhibits(page, token);
 
             if (response.data && response.data.data) {
                 setExhibits(response.data.data);
@@ -57,7 +69,7 @@ const ExhibitsPage = () => {
     };
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
-        router.push(`/exhibits?page=${page}`);
+        router.push(`/my-post?page=${page}`);
     };
 
     const toggleComments = (id: number) => {

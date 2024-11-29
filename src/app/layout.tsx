@@ -13,11 +13,13 @@ export default function RootLayout({
         <html lang="en">
         <body>
         <ReduxProvider>
-            <AuthInitializer />
+            <AuthInitializer/>
             <ClientOnly>
-                <NavBar />
+                <NavBar/>
             </ClientOnly>
-            {children}
+            <div style={{marginTop: '64px'}}>
+                {children}
+            </div>
         </ReduxProvider>
         </body>
         </html>

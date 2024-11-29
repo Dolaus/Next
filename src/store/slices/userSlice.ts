@@ -47,9 +47,9 @@ export const checkUser = createAsyncThunk(
             return responseUsername.data.username;
         } catch (error) {
             if (typeof window !== 'undefined') {
-                localStorage.removeItem('token'); // Видаляємо токен, якщо він недійсний
+                localStorage.removeItem('token');
             }
-            dispatch(removeAuthenticate()); // Скидаємо статус аутентифікації
+            dispatch(removeAuthenticate());
             return rejectWithValue(error.response?.data || 'Failed to authenticate user');
         }
     }
@@ -64,7 +64,7 @@ export const userSlice = createSlice({
         },
         removeToken: (state) => {
             state.token = null;
-            state.username = ''; // Очищаємо ім'я користувача
+            state.username = '';
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('token');
             }
@@ -72,7 +72,7 @@ export const userSlice = createSlice({
         removeAuthenticate: (state) => {
             state.isAuthenticated = false;
             state.token = null;
-            state.username = ''; // Очищаємо ім'я користувача
+            state.username = '';
         },
         loadTokenFromLocalStorage: (state) => {
             if (typeof window !== 'undefined') {

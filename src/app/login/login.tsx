@@ -30,7 +30,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (isToken) {
-            router.push('/exhibits/1');
+            router.push('/exhibits');
         }
     }, [isToken, router]);
 

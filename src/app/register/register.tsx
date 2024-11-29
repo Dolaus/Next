@@ -29,7 +29,7 @@ export default function RegistrationPage() {
             const response = await register(values.email, values.password);
             if (response.status !== 400) {
                 dispatch(login(user));
-                router.push('/');
+                router.push('/exhibits');
             }
         } catch (error) {
             console.error(error);
