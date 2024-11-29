@@ -6,6 +6,8 @@ import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Button from '@mui/material/Button';
+import CommentPage from "@/components/CommentPage";
 
 interface IExhibition {
     id: number;
@@ -24,6 +26,7 @@ const ExhibitsPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [selectedExhibitId, setSelectedExhibitId] = useState<number | null>(null); // Для відстеження активного поста
 
     // Next.js hooks for search params and router
     const searchParams = useSearchParams();
@@ -47,8 +50,8 @@ const ExhibitsPage = () => {
 
             // Перевірка та обробка відповіді
             if (response.data && response.data.data) {
-                setExhibits(response.data.data); // Пости
-                setTotalPages(response.data.lastPage); // Кількість сторінок
+                setExhibits(response.data.data);
+                setTotalPages(response.data.lastPage);
             } else {
                 setExhibits([]);
                 setError('No exhibits found.');
@@ -66,7 +69,11 @@ const ExhibitsPage = () => {
         router.push(`/exhibits?page=${page}`);
     };
 
-    // Fetch data on page load or when the `page` parameter changes
+    // Toggle comments visibility
+    const toggleComments = (id: number) => {
+        setSelectedExhibitId(selectedExhibitId === id ? null : id);
+    };
+
     useEffect(() => {
         fetchExhibits(currentPage);
     }, [currentPage]);
@@ -113,6 +120,18 @@ const ExhibitsPage = () => {
                                 <p>
                                     <strong>Date:</strong> {new Date(exhibit.createdAt).toLocaleString()}
                                 </p>
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => toggleComments(exhibit.id)}
+                                    sx={{ mt: 1 }}
+                                >
+                                    {selectedExhibitId === exhibit.id ? 'Hide Comments' : 'Show Comments'}
+                                </Button>
+                                {selectedExhibitId === exhibit.id && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <CommentPage id={exhibit.id} />
+                                    </Box>
+                                )}
                             </Box>
                         </Grid>
                     ))}

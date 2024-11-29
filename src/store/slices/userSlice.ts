@@ -1,40 +1,40 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../api/axiosInstance";
 import { getUserInformation } from "@/api/userActions";
 import { RootState } from "@/store/store";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axiosInstance from "@/api/axiosInstance";
 
-const initialState = {
+interface UserState {
+    isAuthenticated: boolean;
+    token: string | null;
+    username: string | null;
+}
+
+const initialState: UserState = {
     isAuthenticated: false,
     token: null,
-    username: ''
+    username: null,
 };
-
-interface UserRegister {
-    username: string;
-    password: string;
-}
 
 export const login = createAsyncThunk(
     'user/login',
-    async function (payload: UserRegister, { rejectWithValue }) {
+    async function (credentials: { username: string; password: string }, { rejectWithValue }) {
         try {
-            const responseLogin = await axiosInstance.post('http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com/api/auth/login', {
-                username: payload.username,
-                password: payload.password
+            const response = await axiosInstance.post('/auth/login', {
+                username: credentials.username,
+                password: credentials.password,
             });
 
-            const responseUsername = await getUserInformation(responseLogin.data.access_token);
-
-            return { access_token: responseLogin.data.access_token, username: responseUsername.data.username };
+            const { access_token, username } = response.data;
+            return { access_token, username };
         } catch (error) {
-            return rejectWithValue(error.response?.data || error.message);
+            return rejectWithValue(error.response?.data || 'Login failed');
         }
     }
 );
 
 export const checkUser = createAsyncThunk(
     'user/checkUser',
-    async function (_, { getState, rejectWithValue }) {
+    async function (_, { getState, rejectWithValue, dispatch }) {
         const state = getState() as RootState;
         const token = state.user.token || (typeof window !== 'undefined' && localStorage.getItem('token'));
 
@@ -46,7 +46,11 @@ export const checkUser = createAsyncThunk(
             const responseUsername = await getUserInformation(String(token));
             return responseUsername.data.username;
         } catch (error) {
-            return rejectWithValue(error.response?.data || error.message);
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('token'); // Видаляємо токен, якщо він недійсний
+            }
+            dispatch(removeAuthenticate()); // Скидаємо статус аутентифікації
+            return rejectWithValue(error.response?.data || 'Failed to authenticate user');
         }
     }
 );
@@ -60,12 +64,15 @@ export const userSlice = createSlice({
         },
         removeToken: (state) => {
             state.token = null;
+            state.username = ''; // Очищаємо ім'я користувача
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('token');
             }
         },
         removeAuthenticate: (state) => {
             state.isAuthenticated = false;
+            state.token = null;
+            state.username = ''; // Очищаємо ім'я користувача
         },
         loadTokenFromLocalStorage: (state) => {
             if (typeof window !== 'undefined') {
@@ -88,11 +95,21 @@ export const userSlice = createSlice({
                     localStorage.setItem('token', action.payload.access_token);
                 }
             })
-            .addCase(login.rejected, (state) => {
+            .addCase(login.rejected, (state, action) => {
                 state.isAuthenticated = false;
+                state.token = null;
+                state.username = '';
+                console.error('Login failed:', action.payload);
             })
             .addCase(checkUser.fulfilled, (state, action) => {
                 state.username = action.payload;
+                state.isAuthenticated = true;
+            })
+            .addCase(checkUser.rejected, (state, action) => {
+                state.isAuthenticated = false;
+                state.token = null;
+                state.username = '';
+                console.error('Check user failed:', action.payload);
             });
     },
 });
