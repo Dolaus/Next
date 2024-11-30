@@ -73,7 +73,7 @@ const ExhibitsComponent: React.FC<ExhibitsComponentProps> = ({
                             username={exhibit.user.username}
                             toggleComments={toggleComments}
                             selectedExhibitId={selectedExhibitId}
-                            handleDelete={() => handleDelete(exhibit.id)} // Виклик handleDelete
+                            handleDelete={() => handleDelete(exhibit.id)}
                         />
                     ))}
                 </Grid>

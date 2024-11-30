@@ -24,7 +24,7 @@ const CommentPage: React.FC<CommentPageProps> = ({ id }) => {
     const [comments, setComments] = useState<IComment[]>([]);
     const [commentText, setCommentText] = useState<string>("");
 
-    const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated); // Перевірка авторизації
+    const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
 
     useEffect(() => {
         const resultFetchComments = async () => {
@@ -65,8 +65,6 @@ const CommentPage: React.FC<CommentPageProps> = ({ id }) => {
                         text={comment.text}
                     />
                 ))}
-
-                {/* Поле вводу та кнопка надсилання (лише для авторизованих користувачів) */}
                 {isAuthenticated && (
                     <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, mb: 3 }}>
                         <TextField

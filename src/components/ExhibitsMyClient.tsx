@@ -20,7 +20,7 @@ const ExhibitsMyClient: React.FC<ExhibitsMyClientProps> = ({ currentPage }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem('token'); // Отримання токена з localStorage
+            const token = localStorage.getItem('token');
             if (!token) {
                 alert('Please log in to view your exhibits.');
                 setLoading(false);

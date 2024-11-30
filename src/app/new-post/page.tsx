@@ -1,11 +1,11 @@
 "use client";
 
 import React from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
-import { useFormik } from 'formik';
+import {Box, Button, TextField, Typography} from '@mui/material';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import { uploadExhibition } from "@/api/exhibitActions";
-import { useRouter } from "next/navigation";
+import {uploadExhibition} from "@/api/exhibitActions";
+import {useRouter} from "next/navigation";
 
 const NewPostPage = () => {
     const router = useRouter();
@@ -58,7 +58,7 @@ const NewPostPage = () => {
                 mt: 5,
             }}
         >
-            <Typography variant="h5" component="h1" sx={{ mb: 2 }}>
+            <Typography variant="h5" component="h1" sx={{mb: 2}}>
                 Створити новий пост
             </Typography>
 
@@ -79,7 +79,7 @@ const NewPostPage = () => {
             <Button
                 variant="contained"
                 component="label"
-                sx={{ width: '100%' }}
+                sx={{width: '100%'}}
             >
                 Завантажити зображення
                 <input

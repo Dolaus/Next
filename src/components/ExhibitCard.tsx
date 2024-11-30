@@ -14,7 +14,6 @@ interface ExhibitCardProps {
     imageUrl: string;
     description: string;
     username: string;
-    currentUser: string | null;
     toggleComments: (id: number) => void;
     selectedExhibitId: number | null;
     handleDelete: (id: number) => void;
@@ -29,8 +28,7 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
                                                      selectedExhibitId,
                                                      handleDelete,
                                                  }) => {
-    const currentUser = useSelector((state: RootState) => state.user.username); // Витягуємо ім'я користувача
-
+    const currentUser = useSelector((state: RootState) => state.user.username);
 
     return (
         <Grid item xs={12}>
@@ -53,27 +51,27 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
                         borderRadius: '8px',
                     }}
                 />
-                <Typography variant="h6" sx={{ mt: 2 }}>
+                <Typography variant="h6" sx={{mt: 2}}>
                     {description}
                 </Typography>
                 <Button
                     variant="outlined"
                     onClick={() => toggleComments(id)}
-                    sx={{ mt: 1 }}
+                    sx={{mt: 1}}
                 >
                     {selectedExhibitId === id ? 'Hide Comments' : 'Show Comments'}
                 </Button>
 
                 {selectedExhibitId === id && (
-                    <Box sx={{ mt: 2, mr: 2 }}>
-                        <CommentPage id={id} />
+                    <Box sx={{mt: 2, mr: 2}}>
+                        <CommentPage id={id}/>
                     </Box>
                 )}
                 {currentUser === username && (
                     <Button
                         color="error"
                         onClick={() => handleDelete(id)}
-                        sx={{ mt: 1 }}
+                        sx={{mt: 1}}
                     >
                         Delete Post
                     </Button>

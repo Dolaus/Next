@@ -16,8 +16,12 @@ const useSocket = (currentPage: number, fetchExhibits: (page: number) => void) =
         });
 
         socket.on('newPost', (data) => {
+            alert(2)
+            alert(currentPage)
             toast(`New Post from ${data.user}`);
             if (currentPage === 1) {
+
+                alert(3)
                 fetchExhibits(currentPage);
             }
         });
