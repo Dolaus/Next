@@ -29,7 +29,8 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
                                                      handleDelete,
                                                  }) => {
     const currentUser = useSelector((state: RootState) => state.user.username);
-
+    console.log('currentUser');
+    console.log(currentUser);
     return (
         <Grid item xs={12}>
             <Box
