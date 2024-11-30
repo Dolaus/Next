@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import ExhibitCard from "@/components/ExhibitCard";
 import Typography from "@mui/material/Typography";
+import useSocket from "@/hooks/useSocket";
 
 interface IExhibition {
     id: number;
@@ -52,6 +53,8 @@ const ExhibitsComponent: React.FC<ExhibitsComponentProps> = ({ fetchDataCallback
             setLoading(false);
         }
     };
+
+    useSocket(pageParams, fetchExhibits);
 
     useEffect(() => {
         fetchExhibits(pageParams);
