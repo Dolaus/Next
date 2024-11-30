@@ -3,9 +3,14 @@ import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 
 const useSocket = (currentPage: number, fetchExhibits: (page: number) => void) => {
-    const SOCKET_SERVER_URL = 'http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com/notifications';
+    const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL;
 
     useEffect(() => {
+        if (!SOCKET_SERVER_URL) {
+            console.error('SOCKET_SERVER_URL is not defined');
+            return;
+        }
+
         const socket = io(SOCKET_SERVER_URL, {
             transports: ['websocket'],
             autoConnect: true,
@@ -16,12 +21,9 @@ const useSocket = (currentPage: number, fetchExhibits: (page: number) => void) =
         });
 
         socket.on('newPost', (data) => {
-            alert(2)
-            alert(currentPage)
+            console.log('New post received:', data);
             toast(`New Post from ${data.user}`);
             if (currentPage === 1) {
-
-                alert(3)
                 fetchExhibits(currentPage);
             }
         });
@@ -29,7 +31,7 @@ const useSocket = (currentPage: number, fetchExhibits: (page: number) => void) =
         return () => {
             socket.disconnect();
         };
-    }, [currentPage, fetchExhibits]);
+    }, [SOCKET_SERVER_URL, currentPage, fetchExhibits]);
 };
 
 export default useSocket;
