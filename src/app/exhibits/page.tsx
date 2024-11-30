@@ -7,7 +7,7 @@ import Pagination from '@mui/material/Pagination';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Button from '@mui/material/Button';
 import CommentPage from "@/components/CommentPage";
-import {getAllExhibits} from "@/api/exhibitActions";
+import { getAllExhibits } from "@/api/exhibitActions";
 import Typography from "@mui/material/Typography";
 
 interface IExhibition {
@@ -77,7 +77,7 @@ const ExhibitsPage = () => {
             {!loading && !error && exhibits.length > 0 && (
                 <Grid container spacing={2}>
                     {exhibits.map((exhibit) => (
-                        <Grid item xs={12} sm={6} md={4} key={exhibit.id}>
+                        <Grid item xs={12} key={exhibit.id}>
                             <Box
                                 sx={{
                                     border: '1px solid #ddd',
@@ -91,13 +91,16 @@ const ExhibitsPage = () => {
                                     src={`http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com${exhibit.imageUrl}`}
                                     alt={exhibit.description}
                                     style={{
-                                        width: '100%',
-                                        height: '200px',
+                                        width: '600px',
+                                        height: '300px',
                                         objectFit: 'cover',
                                         borderRadius: '8px',
                                     }}
                                 />
-                                <Typography>{exhibit.description}</Typography>
+                                <Typography variant="h6" sx={{ mt: 2 }}>{exhibit.description}</Typography>
+                                <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                                    Uploaded by: {exhibit.user.username} | Comments: {exhibit.commentCount}
+                                </Typography>
                                 <Button
                                     variant="outlined"
                                     onClick={() => toggleComments(exhibit.id)}
