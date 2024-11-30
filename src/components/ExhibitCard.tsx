@@ -1,9 +1,13 @@
+"use client";
+
 import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CommentPage from "@/components/CommentPage";
+import {RootState} from "@/store/store";
+import {useSelector} from "react-redux";
 
 interface ExhibitCardProps {
     id: number;
@@ -21,11 +25,13 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
                                                      imageUrl,
                                                      description,
                                                      username,
-                                                     currentUser,
                                                      toggleComments,
                                                      selectedExhibitId,
                                                      handleDelete,
                                                  }) => {
+    const currentUser = useSelector((state: RootState) => state.user.username); // Витягуємо ім'я користувача
+
+
     return (
         <Grid item xs={12}>
             <Box
@@ -57,9 +63,10 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
                 >
                     {selectedExhibitId === id ? 'Hide Comments' : 'Show Comments'}
                 </Button>
+
                 {selectedExhibitId === id && (
                     <Box sx={{ mt: 2, mr: 2 }}>
-                        <CommentPage id={id}/>
+                        <CommentPage id={id} />
                     </Box>
                 )}
                 {currentUser === username && (

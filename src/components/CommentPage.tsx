@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react';
 import { createCommentForPostById, getAllCommentsForPost } from "../api/commentActions";
 import Box from "@mui/material/Box";
