@@ -98,9 +98,6 @@ const ExhibitsPage = () => {
                                     }}
                                 />
                                 <Typography variant="h6" sx={{ mt: 2 }}>{exhibit.description}</Typography>
-                                <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-                                    Uploaded by: {exhibit.user.username} | Comments: {exhibit.commentCount}
-                                </Typography>
                                 <Button
                                     variant="outlined"
                                     onClick={() => toggleComments(exhibit.id)}

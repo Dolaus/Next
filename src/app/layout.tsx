@@ -3,6 +3,7 @@ import ReduxProvider from "@/components/ReduxProvider";
 import ClientOnly from "@/components/ClientOnly";
 import NavBar from "@/components/navbar/NavBar";
 import AuthInitializer from "@/components/AuthInitializer";
+import {Box} from "@mui/material";
 
 export default function RootLayout({
                                        children,
@@ -11,15 +12,23 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-        <body>
+        <body style={{height: "100%", margin: 0}}>
         <ReduxProvider>
             <AuthInitializer/>
             <ClientOnly>
                 <NavBar/>
             </ClientOnly>
-            <div style={{marginTop: '64px'}}>
+            <Box
+                style={{
+                    marginTop: "64px",
+                    height: "calc(100vh - 64px)",
+                    overflowY: "auto",
+                    padding: "0",
+                    boxSizing: "border-box",
+                }}
+            >
                 {children}
-            </div>
+            </Box>
         </ReduxProvider>
         </body>
         </html>
