@@ -109,7 +109,6 @@ export const userSlice = createSlice({
                 state.isAuthenticated = false;
                 state.token = null;
                 state.username = '';
-                console.error('Check user failed:', action.payload);
             });
     },
 });
